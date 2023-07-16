@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../../../redux/features/users/userApi";
+import { userJwtPayload } from "../../../types/jwtPayloadInterface";
+import jwt_decode from "jwt-decode";
+import { getUser } from "../../../redux/features/users/usersSlice";
+import { useAppDispatch } from "../../../redux/hook";
 
 type LoginFormValues = {
     email: string;
@@ -10,7 +15,9 @@ type LoginFormValues = {
 };
 
 const Login = () => {
-    const [loading, setLoading] = useState(false);
+    const dispatch = useAppDispatch();
+
+    const [loginUser, { isLoading }] = useLoginUserMutation();
 
     const {
         register,
@@ -18,11 +25,37 @@ const Login = () => {
         formState: { errors },
     } = useForm<LoginFormValues>();
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    const handleLogin: SubmitHandler<LoginFormValues> = (data) => {
-        // const { name, password, email } = data;
-        toast.success("Register successfully!");
+    const handleLogin: SubmitHandler<LoginFormValues> = async (data) => {
+        const { password, email } = data;
+
+        const createUserData = {
+            email: email,
+            password: password,
+        };
+        const result = await loginUser(createUserData);
+        if ("data" in result) {
+            if (result.data.statusCode === 200) {
+                const decoded: userJwtPayload = jwt_decode(
+                    result.data.data.accessToken as string
+                );
+                dispatch(
+                    getUser({
+                        email: decoded?.email,
+                        role: decoded?.role,
+                    })
+                );
+                localStorage.setItem(
+                    "token",
+                    result.data.data.accessToken as string
+                );
+                toast.success("User login successfully!");
+                navigate("/");
+            }
+        } else {
+            toast.error("User login failed!");
+        }
     };
 
     return (
@@ -42,6 +75,9 @@ const Login = () => {
                                 {...register("email", {
                                     required: "Email Is Required!",
                                 })}
+                                autoComplete="off"
+                                autoCapitalize="off"
+                                autoCorrect="off"
                                 type="email"
                                 name="email"
                                 id="floating_email"
@@ -66,6 +102,9 @@ const Login = () => {
                                 {...register("password", {
                                     required: "Password Is Required!",
                                 })}
+                                autoComplete="off"
+                                autoCapitalize="off"
+                                autoCorrect="off"
                                 type="password"
                                 name="password"
                                 id="floating_password"
@@ -87,11 +126,11 @@ const Login = () => {
 
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={isLoading}
                             className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         >
                             {" "}
-                            {loading ? "Loading" : "Login"}
+                            {isLoading ? "Loading" : "Login"}
                         </button>
                     </form>
 

@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from "react";
+import jwt_decode from "jwt-decode";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../../../redux/features/users/userApi";
+import { getUser } from "../../../redux/features/users/usersSlice";
+import { useAppDispatch } from "../../../redux/hook";
+import { userJwtPayload } from "../../../types/jwtPayloadInterface";
 
 type RegisterFormValues = {
     fullName: string;
@@ -12,6 +17,7 @@ type RegisterFormValues = {
 };
 
 const Register = () => {
+    const dispatch = useAppDispatch();
     const [createUser, { isLoading }] = useCreateUserMutation();
 
     const {
@@ -20,7 +26,7 @@ const Register = () => {
         formState: { errors },
     } = useForm<RegisterFormValues>();
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleRegister: SubmitHandler<RegisterFormValues> = async (data) => {
         const { fullName, password, email } = data;
@@ -32,8 +38,28 @@ const Register = () => {
         };
 
         const result = await createUser(createUserData);
-        console.log(result);
-        toast.success("Register successfully!");
+        
+        if ("data" in result) {
+            if (result.data.statusCode === 200) {
+                const decoded: userJwtPayload = jwt_decode(
+                    result.data.data.accessToken as string
+                );
+                dispatch(
+                    getUser({
+                        email: decoded?.email,
+                        role: decoded?.role,
+                    })
+                );
+                localStorage.setItem(
+                    "token",
+                    result.data.data.accessToken as string
+                );
+                toast.success("User registration successfully!");
+                navigate("/");
+            }
+        } else {
+            toast.error("User registration failed!");
+        }
     };
 
     return (
@@ -55,13 +81,16 @@ const Register = () => {
                                 })}
                                 type="text"
                                 name="fullName"
+                                autoComplete="off"
+                                autoCapitalize="off"
+                                autoCorrect="off"
                                 id="floating_name"
-                                className="block py-2 px-2 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:bg-transparent focus:ring-0 focus:border-blue-600"
+                                className="block py-2 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:bg-transparent focus:ring-0 focus:border-blue-600"
                                 required
                             />
                             <label
                                 htmlFor="floating_name"
-                                className="absolute text-md text-gray-900 -top-6 font-semibold"
+                                className="absolute text-md text-gray-900 -top-4 font-semibold"
                             >
                                 Full Name
                             </label>
@@ -77,14 +106,17 @@ const Register = () => {
                                     required: "Email Is Required!",
                                 })}
                                 type="email"
+                                autoComplete="off"
+                                autoCapitalize="off"
+                                autoCorrect="off"
                                 name="email"
                                 id="floating_email"
-                                className="block py-2 px-2 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                className="block py-2 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 required
                             />
                             <label
                                 htmlFor="floating_email"
-                                className="absolute text-md text-gray-900 -top-6 font-semibold"
+                                className="absolute text-md text-gray-900 -top-4 font-semibold"
                             >
                                 Email
                             </label>
@@ -102,6 +134,9 @@ const Register = () => {
                                 })}
                                 type="password"
                                 name="password"
+                                autoComplete="off"
+                                autoCapitalize="off"
+                                autoCorrect="off"
                                 id="floating_password"
                                 className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 required

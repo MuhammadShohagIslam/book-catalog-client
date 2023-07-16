@@ -1,7 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Link } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 import Logo from "../../../assets/Logo/logo.jpg";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { getUser } from "../../../redux/features/users/usersSlice";
 
 const Navbar = () => {
+    const user = useAppSelector((state) => state.local.user.user);
+    const dispatch = useAppDispatch();
+    const handleLogOut = () => {
+        dispatch(getUser({ email: "", role: "" }));
+        localStorage.removeItem("token");
+    };
     return (
         <nav className=" py-4  border-gray-200 bg-gray-50">
             <div className="flex container flex-wrap items-center justify-between mx-auto">
@@ -55,14 +67,47 @@ const Navbar = () => {
                                 All Books
                             </Link>
                         </li>
-                        <li>
-                            <Link
-                                to="/add-book"
-                                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
-                            >
-                                Add Book
-                            </Link>
-                        </li>
+                        {user?.email && (
+                            <>
+                                <li>
+                                    <Link
+                                        to="/add-book"
+                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                    >
+                                        Add Book
+                                    </Link>
+                                </li>
+                                <li
+                                    onClick={handleLogOut}
+                                    className="py-2 pl-3 pr-4
+                                    text-gray-700 rounded hover:bg-gray-100
+                                    md:hover:bg-transparent md:border-0
+                                    md:hover:text-blue-700 md:p-0 cursor-pointer flex items-center justify-center"
+                                >
+                                    <FiLogOut className="text-base" />
+                                </li>
+                            </>
+                        )}
+                        {!user?.email && (
+                            <>
+                                <li>
+                                    <Link
+                                        to="/login"
+                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                    >
+                                        Login
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/register"
+                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                    >
+                                        Register
+                                    </Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>
