@@ -3,36 +3,25 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateUserMutation } from "../../../redux/features/users/userApi";
 
-type RegisterFormValues = {
-    fullName: string;
+type LoginFormValues = {
     email: string;
     password: string;
 };
 
-const Register = () => {
-    const [createUser, { isLoading }] = useCreateUserMutation();
+const Login = () => {
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<RegisterFormValues>();
+    } = useForm<LoginFormValues>();
 
     // const navigate = useNavigate();
 
-    const handleRegister: SubmitHandler<RegisterFormValues> = async (data) => {
-        const { fullName, password, email } = data;
-
-        const createUserData = {
-            name: fullName,
-            email: email,
-            password: password,
-        };
-
-        const result = await createUser(createUserData);
-        console.log(result);
+    const handleLogin: SubmitHandler<LoginFormValues> = (data) => {
+        // const { name, password, email } = data;
         toast.success("Register successfully!");
     };
 
@@ -41,36 +30,13 @@ const Register = () => {
             <div className="container flex items-center justify-center h-screen mx-auto">
                 <div className="lg:w-[560px] sm:w-[280px] m-auto py-12  bg-blue-100 rounded-lg">
                     <h2 className="text-center font-medium text-primary text-2xl mb-10">
-                        Register Now!
+                        Login Now!
                     </h2>
 
                     <form
-                        onSubmit={handleSubmit(handleRegister)}
+                        onSubmit={handleSubmit(handleLogin)}
                         className="px-10 pt-4"
                     >
-                        <div className="relative z-0 w-full mb-10 group">
-                            <input
-                                {...register("fullName", {
-                                    required: "Full Name Is Required!",
-                                })}
-                                type="text"
-                                name="fullName"
-                                id="floating_name"
-                                className="block py-2 px-2 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:bg-transparent focus:ring-0 focus:border-blue-600"
-                                required
-                            />
-                            <label
-                                htmlFor="floating_name"
-                                className="absolute text-md text-gray-900 -top-6 font-semibold"
-                            >
-                                Full Name
-                            </label>
-                            {errors.fullName && (
-                                <p className="text-red-600">
-                                    {errors.fullName?.message}
-                                </p>
-                            )}
-                        </div>
                         <div className="relative z-0 w-full mb-10 group">
                             <input
                                 {...register("email", {
@@ -79,12 +45,12 @@ const Register = () => {
                                 type="email"
                                 name="email"
                                 id="floating_email"
-                                className="block py-2 px-2 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 required
                             />
                             <label
                                 htmlFor="floating_email"
-                                className="absolute text-md text-gray-900 -top-6 font-semibold"
+                                className="absolute text-md text-gray-900 -top-4 font-semibold"
                             >
                                 Email
                             </label>
@@ -121,21 +87,21 @@ const Register = () => {
 
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={loading}
                             className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         >
                             {" "}
-                            {isLoading ? "Loading" : "Register"}
+                            {loading ? "Loading" : "Login"}
                         </button>
                     </form>
 
-                    <p className="text-primary text-center mt-3 ">
-                        Already Do You Have a Account?{" "}
+                    <p className="text-primary text-center mt-3">
+                        If You Do Not Have a Account?{" "}
                         <Link
                             className="text-gray-800 hover:text-blue-700 font-semibold"
-                            to="/login"
+                            to="/register"
                         >
-                            Login Now
+                            Register Now
                         </Link>
                     </p>
                 </div>
@@ -144,4 +110,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;
