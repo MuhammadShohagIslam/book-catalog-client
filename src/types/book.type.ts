@@ -1,5 +1,6 @@
 export interface IBook {
     title: string;
+    image:string;
     genre: string;
     author: string;
     publicationDate: Date;
