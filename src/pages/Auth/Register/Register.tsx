@@ -48,6 +48,7 @@ const Register = () => {
                     getUser({
                         email: decoded?.email,
                         role: decoded?.role,
+                        author: decoded?.userId
                     })
                 );
                 localStorage.setItem(

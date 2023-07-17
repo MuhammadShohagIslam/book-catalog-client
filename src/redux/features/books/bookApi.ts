@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { IBook } from "../../../types/book.type";
 import { baseApi } from "../../api/apiSlice";
 
@@ -10,6 +11,7 @@ const bookApi = baseApi.injectEndpoints({
                 body: payload,
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
+                    authorization: `bear ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: ["Books"],
