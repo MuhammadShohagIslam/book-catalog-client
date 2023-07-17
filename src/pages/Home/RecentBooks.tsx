@@ -8,7 +8,10 @@ import { useAllBooksQuery } from "../../redux/features/books/bookApi";
 import { IBook } from "../../types/book.type";
 
 const RecentBooks = () => {
-    const { data, isLoading, isError } = useAllBooksQuery(undefined);
+    const { data, isLoading, isError } = useAllBooksQuery({
+        searchTerm: "",
+        genre: "",
+    });
 
     let content;
 

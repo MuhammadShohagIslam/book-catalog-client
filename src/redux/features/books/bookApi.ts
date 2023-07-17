@@ -17,7 +17,16 @@ const bookApi = baseApi.injectEndpoints({
             invalidatesTags: ["Books"],
         }),
         allBooks: build.query({
-            query: () => `books`,
+            query: ({
+                searchTerm,
+                genre,
+            }: {
+                searchTerm: string;
+                genre: string;
+            }) =>
+                `books${searchTerm && `?searchTerm=${searchTerm}`}${
+                    genre && `${!searchTerm ? "?": "&"}genre=${genre}`
+                }`,
             providesTags: ["Books"],
         }),
     }),

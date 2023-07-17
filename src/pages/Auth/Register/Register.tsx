@@ -38,7 +38,7 @@ const Register = () => {
         };
 
         const result = await createUser(createUserData);
-        
+
         if ("data" in result) {
             if (result.data.statusCode === 200) {
                 const decoded: userJwtPayload = jwt_decode(
@@ -48,7 +48,8 @@ const Register = () => {
                     getUser({
                         email: decoded?.email,
                         role: decoded?.role,
-                        author: decoded?.userId
+                        userId: decoded?.userId,
+                        name: decoded?.name,
                     })
                 );
                 localStorage.setItem(

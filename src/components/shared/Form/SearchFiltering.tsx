@@ -1,6 +1,15 @@
 import { useState } from "react";
 
-const SearchFiltering = () => {
+type SearchFilteringPropType = {
+    handleFilteringByGenre: (genre: string) => void;
+    handleSearchingBook: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleFilteringByPublishDate: (date: string) => void;
+};
+const SearchFiltering = ({
+    handleFilteringByGenre,
+    handleSearchingBook,
+    handleFilteringByPublishDate,
+}: SearchFilteringPropType) => {
     const [openGenres, setOpenGenres] = useState(false);
     const [openPublishDate, setOpenPublishDate] = useState(false);
 
@@ -25,9 +34,9 @@ const SearchFiltering = () => {
                     >
                         <path
                             stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="m1 1 4 4 4-4"
                         />
                     </svg>
@@ -40,38 +49,64 @@ const SearchFiltering = () => {
                         >
                             <li>
                                 <button
-                                    onClick={() => setOpenGenres(!openGenres)}
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre("Beliefs");
+                                    }}
                                     type="button"
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
-                                    Mockups
+                                    Beliefs
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    onClick={() => setOpenGenres(!openGenres)}
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre("Hadith");
+                                    }}
                                     type="button"
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
-                                    Templates
+                                    Hadith
                                 </button>
                             </li>
                             <li>
                                 <button
                                     type="button"
-                                    onClick={() => setOpenGenres(!openGenres)}
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre(
+                                                "Islamic Life"
+                                            );
+                                    }}
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
-                                    Design
+                                    Islamic Life
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    onClick={() => setOpenGenres(!openGenres)}
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre("Fiction");
+                                    }}
                                     type="button"
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
-                                    Logos
+                                    Fiction
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre("History");
+                                    }}
+                                    type="button"
+                                    className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
+                                >
+                                    History
                                 </button>
                             </li>
                         </ul>
@@ -81,6 +116,7 @@ const SearchFiltering = () => {
                 <div className="relative w-full">
                     <input
                         type="search"
+                        onChange={handleSearchingBook}
                         className="block p-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
                         placeholder="Search Book Based on Title, Author, or Genre..."
                         required
@@ -98,9 +134,9 @@ const SearchFiltering = () => {
                         >
                             <path
                                 stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                             />
                         </svg>
@@ -126,9 +162,9 @@ const SearchFiltering = () => {
                     >
                         <path
                             stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="m1 1 4 4 4-4"
                         />
                     </svg>
@@ -141,9 +177,24 @@ const SearchFiltering = () => {
                         >
                             <li>
                                 <button
-                                    onClick={() =>
-                                        setOpenPublishDate(!openPublishDate)
-                                    }
+                                    onClick={() => {
+                                        setOpenPublishDate(!openPublishDate),
+                                            handleFilteringByPublishDate("all");
+                                    }}
+                                    type="button"
+                                    className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
+                                >
+                                    All
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={() => {
+                                        setOpenPublishDate(!openPublishDate),
+                                            handleFilteringByPublishDate(
+                                                "2023"
+                                            );
+                                    }}
                                     type="button"
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
@@ -152,9 +203,12 @@ const SearchFiltering = () => {
                             </li>
                             <li>
                                 <button
-                                    onClick={() =>
-                                        setOpenPublishDate(!openPublishDate)
-                                    }
+                                    onClick={() => {
+                                        setOpenPublishDate(!openPublishDate),
+                                            handleFilteringByPublishDate(
+                                                "2022"
+                                            );
+                                    }}
                                     type="button"
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >

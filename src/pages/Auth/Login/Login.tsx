@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -44,7 +45,8 @@ const Login = () => {
                     getUser({
                         email: decoded?.email,
                         role: decoded?.role,
-                        author: decoded?.userId
+                        userId: decoded?.userId,
+                        name: decoded?.name,
                     })
                 );
                 localStorage.setItem(

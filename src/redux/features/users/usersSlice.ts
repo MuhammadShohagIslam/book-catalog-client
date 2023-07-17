@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../../types/user.type";
 
 interface IUserState {
-    user: Pick<IUser, "email" | "role" | "author">;
+    user: IUser;
 }
 
 const initialState: IUserState = {
-    user: {} as Pick<IUser, "email" | "role" | "author">,
+    user: {} as IUser,
 };
 
 const usersSlice = createSlice({
@@ -16,7 +16,7 @@ const usersSlice = createSlice({
     reducers: {
         getUser: (
             state,
-            action: PayloadAction<Pick<IUser, "email" | "role" | "author">>
+            action: PayloadAction<IUser>
         ) => {
             state.user = action.payload;
         },

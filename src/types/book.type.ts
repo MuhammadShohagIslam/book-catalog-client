@@ -4,12 +4,11 @@ export interface IBook {
     image:string;
     genre: string;
     author: {
-        email: string;
-        id:string;
-        name:string;
+        name: string;
+        authorId:string;
     } | string;
     publicationDate: Date;
-    createdAt?: Date;
+    createdAt?: string ;
     updatedAt?: Date;
     reviews?: {
         name: string;

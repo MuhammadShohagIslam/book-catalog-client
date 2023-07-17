@@ -25,11 +25,14 @@ const AddBook = () => {
     > = async (data) => {
         const { genre, image, title } = data;
 
-        if (!user?.author) {
+        if (!user?.email) {
             return toast.error("Your Are Not Authorized user to add book!");
         }
         const addBookData = {
-            author: user?.author as string,
+            author: {
+                name: user?.name as string,
+                authorId: user?.userId as string,
+            },
             publicationDate: new Date(),
             genre,
             image,
@@ -41,7 +44,7 @@ const AddBook = () => {
         if ("data" in result) {
             if (result.data.statusCode === 200) {
                 toast.success("Added Book successfully!");
-                navigate("/");
+                // navigate("/");
             }
         } else {
             toast.error("Added Book failed!");
