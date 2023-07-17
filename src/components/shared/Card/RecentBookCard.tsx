@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { FiUser } from "react-icons/fi";
@@ -10,7 +11,7 @@ type RecentBookCardProp = {
 const RecentBookCard = ({ data }: RecentBookCardProp) => {
     return (
         <Link
-            to="#"
+            to={`/books/${data?._id}`}
             className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 p-3"
         >
             {data?.image ? (
