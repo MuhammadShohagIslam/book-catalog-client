@@ -33,6 +33,17 @@ const bookApi = baseApi.injectEndpoints({
             query: (payload: string) => `books/${payload}`,
             providesTags: ["Books", "Reviews"],
         }),
+        deleteBook: build.mutation({
+            query: (payload: string) => ({
+                url: `books/${payload}`,
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    authorization: `bear ${localStorage.getItem("token")}`,
+                },
+            }),
+            invalidatesTags: ["Books"],
+        }),
         createReview: build.mutation({
             query: (payload: IReview) => ({
                 url: "books/reviews",
@@ -40,7 +51,7 @@ const bookApi = baseApi.injectEndpoints({
                 body: payload,
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
-                    authorization: `bear ${localStorage.getItem("token")}`
+                    authorization: `bear ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: ["Reviews"],
@@ -53,5 +64,11 @@ const bookApi = baseApi.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useAddBookMutation, useAllBooksQuery, useSingleBookQuery } =
-    bookApi;
+export const {
+    useAddBookMutation,
+    useAllBooksQuery,
+    useSingleBookQuery,
+    useDeleteBookMutation,
+    useCreateReviewMutation,
+    useGetReviewsQuery,
+} = bookApi;

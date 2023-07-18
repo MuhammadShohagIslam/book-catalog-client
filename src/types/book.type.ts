@@ -15,7 +15,8 @@ export interface IBook {
         email: string;
         review: string;
         bookId: string;
-    };
+        _id?: string
+    }[];
 }
 
 export interface IReview {
