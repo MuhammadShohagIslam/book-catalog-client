@@ -24,7 +24,7 @@ const SearchFiltering = ({
                     }}
                     type="button"
                 >
-                    All Genres{" "}
+                    Filter By Genres{" "}
                     <svg
                         className="w-2.5 h-2.5 ml-2.5"
                         aria-hidden="true"
@@ -47,6 +47,18 @@ const SearchFiltering = ({
                             className="py-2 text-sm text-gray-700 "
                             aria-labelledby="dropdown-button"
                         >
+                            <li>
+                                <button
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre("all");
+                                    }}
+                                    type="button"
+                                    className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
+                                >
+                                  All Genres  
+                                </button>
+                            </li>
                             <li>
                                 <button
                                     onClick={() => {
@@ -152,7 +164,7 @@ const SearchFiltering = ({
                     }}
                     type="button"
                 >
-                    All Publication Date{" "}
+                    Filter By Publication Year{" "}
                     <svg
                         className="w-2.5 h-2.5 ml-2.5"
                         aria-hidden="true"

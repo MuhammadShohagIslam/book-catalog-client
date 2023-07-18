@@ -10,13 +10,13 @@ import { IBook } from "../../types/book.type";
 const RecentBooks = () => {
     const { data, isLoading, isError } = useAllBooksQuery({
         searchTerm: "",
-        genre: "",
+        genre: ""
     });
 
     let content;
 
     if (data?.data?.length > 0) {
-        content = data?.data?.map((d: IBook) => (
+        content = data?.data?.slice(0, 10).map((d: IBook) => (
             <RecentBookCard key={d._id} data={d} />
         ));
     }
