@@ -17,3 +17,10 @@ export interface IBook {
         bookId: string;
     };
 }
+
+export interface IReview {
+    name: string;
+    email: string;
+    review: string;
+    bookId: string | undefined;
+}

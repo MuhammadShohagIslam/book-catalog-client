@@ -6,7 +6,8 @@ import Register from "../pages/Auth/Register/Register";
 import Login from "../pages/Auth/Login/Login";
 import AddBook from "../pages/AddBook/AddBook";
 import AllBooks from "../pages/AllBooks/AllBooks";
-import BookDetails from "../pages/AllBooks/BookDetails/BookDetails";
+import BookDetails from "../pages/AllBooks/BookDetails";
+
 
 const router = createBrowserRouter([
     {

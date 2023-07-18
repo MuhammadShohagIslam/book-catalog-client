@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { IBook } from "../../../types/book.type";
+import { IBook, IReview } from "../../../types/book.type";
 import { baseApi } from "../../api/apiSlice";
 
 const bookApi = baseApi.injectEndpoints({
@@ -25,12 +25,33 @@ const bookApi = baseApi.injectEndpoints({
                 genre: string;
             }) =>
                 `books${searchTerm && `?searchTerm=${searchTerm}`}${
-                    genre && `${!searchTerm ? "?": "&"}genre=${genre}`
+                    genre && `${!searchTerm ? "?" : "&"}genre=${genre}`
                 }`,
             providesTags: ["Books"],
+        }),
+        singleBook: build.query({
+            query: (payload: string) => `books/${payload}`,
+            providesTags: ["Books", "Reviews"],
+        }),
+        createReview: build.mutation({
+            query: (payload: IReview) => ({
+                url: "books/reviews",
+                method: "POST",
+                body: payload,
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    authorization: `bear ${localStorage.getItem("token")}`
+                },
+            }),
+            invalidatesTags: ["Reviews"],
+        }),
+        getReviews: build.query({
+            query: () => `books/reviews`,
+            providesTags: ["Reviews"],
         }),
     }),
     overrideExisting: false,
 });
 
-export const { useAddBookMutation, useAllBooksQuery } = bookApi;
+export const { useAddBookMutation, useAllBooksQuery, useSingleBookQuery } =
+    bookApi;
