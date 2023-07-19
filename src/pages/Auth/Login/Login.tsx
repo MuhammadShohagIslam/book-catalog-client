@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLoginUserMutation } from "../../../redux/features/users/userApi";
 import { userJwtPayload } from "../../../types/jwtPayloadInterface";
 import jwt_decode from "jwt-decode";
@@ -27,6 +28,9 @@ const Login = () => {
     } = useForm<LoginFormValues>();
 
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/"; 
 
     const handleLogin: SubmitHandler<LoginFormValues> = async (data) => {
         const { password, email } = data;
@@ -54,7 +58,7 @@ const Login = () => {
                     result.data.data.accessToken as string
                 );
                 toast.success("User login successfully!");
-                navigate("/");
+                navigate(from, { replace: true })
             }
         } else {
             toast.error("User login failed!");

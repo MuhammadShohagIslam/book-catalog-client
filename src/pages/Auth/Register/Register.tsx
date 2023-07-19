@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import jwt_decode from "jwt-decode";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCreateUserMutation } from "../../../redux/features/users/userApi";
 import { getUser } from "../../../redux/features/users/usersSlice";
 import { useAppDispatch } from "../../../redux/hook";
@@ -27,6 +28,9 @@ const Register = () => {
     } = useForm<RegisterFormValues>();
 
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const handleRegister: SubmitHandler<RegisterFormValues> = async (data) => {
         const { fullName, password, email } = data;
@@ -57,7 +61,7 @@ const Register = () => {
                     result.data.data.accessToken as string
                 );
                 toast.success("User registration successfully!");
-                navigate("/");
+                navigate(from, { replace: true });
             }
         } else {
             toast.error("User registration failed!");
