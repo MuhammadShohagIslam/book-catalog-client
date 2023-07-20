@@ -31,6 +31,7 @@ const Login = () => {
 
     const location = useLocation();
     const from = location.state?.from?.pathname || "/"; 
+    console.log(location.state);
 
     const handleLogin: SubmitHandler<LoginFormValues> = async (data) => {
         const { password, email } = data;

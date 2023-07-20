@@ -1,64 +1,90 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { useAddBookMutation } from "../../redux/features/books/bookApi";
-import { IBook } from "../../types/book.type";
-import { useAppSelector } from "../../redux/hook";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+    useUpdateBookMutation
+} from "../../../redux/features/books/bookApi";
+import { IBook } from "../../../types/book.type";
+import { useAppSelector } from "../../../redux/hook";
+import { useEffect } from "react";
 
-const AddBook = () => {
-    const user = useAppSelector((state) => state.local.user.user);
-    const [addBook, { isLoading }] = useAddBookMutation();
+const UpdateBook = () => {
+    // const param = useParams();
+    // const { data } = useSingleBookQuery(param?.id as string);
+    // console.log(param?.id, data);
+    const param = useLocation();
+    const [updateBook, { isLoading }] = useUpdateBookMutation();
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
-    } = useForm<Pick<IBook, "genre" | "image" | "title">>();
+    } = useForm<Pick<IBook, "genre" | "image" | "title">>({
+        defaultValues: {
+            title: "",
+            image: "",
+            genre: "",
+        },
+    });
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, []);
+
+    useEffect(() => {
+        reset({
+            title: param?.state?.title,
+            image: param?.state?.image,
+            genre: param?.state?.genre,
+        });
+    }, [reset, param?.state]);
 
     const navigate = useNavigate();
 
-    const handleAddBook: SubmitHandler<
+    const handleEditBook: SubmitHandler<
         Pick<IBook, "genre" | "image" | "title">
     > = async (data) => {
         const { genre, image, title } = data;
 
-        if (!user?.email) {
-            return toast.error("Your Are Not Authorized user to add book!");
-        }
-        const addBookData = {
-            author: {
-                name: user?.name as string,
-                authorId: user?.userId as string,
+        
+
+        const updatedBookData = {
+            id: param?.state?._id,
+            data: {
+                genre,
+                image,
+                title,
             },
-            publicationDate: new Date(),
-            genre,
-            image,
-            title,
         };
 
-        const result = await addBook(addBookData);
+        const result = await updateBook(updatedBookData);
 
         if ("data" in result) {
             if (result.data.statusCode === 200) {
-                toast.success("Added Book successfully!");
-                navigate("/");
+                toast.success("Update Book successfully!");
+                navigate(-1);
             }
         } else {
-            toast.error("Added Book failed!");
+            toast.error("Book Update failed!");
         }
     };
     return (
         <div className="container flex items-center justify-center  mx-auto py-32">
             <div className="lg:w-[50%] sm:w-[280px] m-auto py-12  bg-blue-100 rounded-lg">
                 <h2 className="text-center font-medium text-primary text-2xl mb-5">
-                    Add New Book Now!
+                    Edit Book
                 </h2>
 
                 <form
-                    onSubmit={handleSubmit(handleAddBook)}
+                    onSubmit={handleSubmit(handleEditBook)}
                     className="px-10 pt-4"
                 >
                     <div className="relative z-0 w-full mb-6 group">
@@ -143,7 +169,7 @@ const AddBook = () => {
                         className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                     >
                         {" "}
-                        {isLoading ? "Loading" : "Add Book"}
+                        {isLoading ? "Loading" : "Update Book"}
                     </button>
                 </form>
             </div>
@@ -151,4 +177,4 @@ const AddBook = () => {
     );
 };
 
-export default AddBook;
+export default UpdateBook;

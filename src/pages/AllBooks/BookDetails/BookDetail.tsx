@@ -1,37 +1,56 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import moment from "moment";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
 import BookInfoItem from "./BookInfoItem";
 import { IBook } from "./../../../types/book.type";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import DeleteModal from "../../../components/shared/Modal/DeleteModal";
-
+import { useAppSelector } from "../../../redux/hook";
 
 const BookDetail = ({ data }: { data: IBook }) => {
     const [openDeleteModal, setDeleteModal] = useState(false);
     const [bookData, setBookData] = useState<IBook | undefined>(undefined);
+    const user = useAppSelector((state) => state.local.user.user);
+    const location = useLocation();
+    const navigate = useNavigate();
 
-
-    const handleDeleteLanguage = (data: IBook) => {
+    const handleDeleteBook = (data: IBook) => {
+        if (!user?.email) {
+            console.log("inside");
+            return navigate("/login", {
+                state: location,
+            });
+        }
         setBookData(data);
         setDeleteModal(!openDeleteModal);
     };
 
+    const handleEditBook = (data: IBook) => {
+        if (!user?.email) {
+            console.log("inside");
+            return navigate("/login", {
+                state: location,
+            });
+        }
+        navigate("/update-book", {
+            state: data,
+        });
+    };
 
     return (
         <>
             <div className="w-[60%] mx-auto py-16 bg-white">
                 <div className="pr-9  flex gap-3 items-center justify-end ">
-                    <Link
-                        to={`/books/update/${data?._id}`}
-                        className={`flex items-center text-base hover:text-secondary text-primary cursor-pointer`}
+                    <span
+                        onClick={() => handleEditBook(data)}
+                        className="flex items-center text-base hover:text-rose-500 text-secondary cursor-pointer"
                     >
                         <BiEdit className="text-xl" />
-                    </Link>
+                    </span>
                     <span
-                        onClick={() => handleDeleteLanguage(data)}
+                        onClick={() => handleDeleteBook(data)}
                         className="flex items-center text-base hover:text-rose-500 text-secondary cursor-pointer"
                     >
                         <AiFillDelete className="text-xl" />

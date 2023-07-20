@@ -16,6 +16,21 @@ const bookApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Books"],
         }),
+        updateBook: build.mutation({
+            query: (payload: {
+                id: string;
+                data: Pick<IBook, "title" | "genre" | "image">;
+            }) => ({
+                url: `books/${payload.id}`,
+                method: "PATCH",
+                body: payload.data,
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    authorization: `bear ${localStorage.getItem("token")}`,
+                },
+            }),
+            invalidatesTags: ["Books"],
+        }),
         allBooks: build.query({
             query: ({
                 searchTerm,
@@ -66,6 +81,7 @@ const bookApi = baseApi.injectEndpoints({
 
 export const {
     useAddBookMutation,
+    useUpdateBookMutation,
     useAllBooksQuery,
     useSingleBookQuery,
     useDeleteBookMutation,
