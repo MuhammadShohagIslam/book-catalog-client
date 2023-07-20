@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-misused-promises */
@@ -5,11 +6,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-    useUpdateBookMutation
-} from "../../../redux/features/books/bookApi";
+import { useUpdateBookMutation } from "../../../redux/features/books/bookApi";
 import { IBook } from "../../../types/book.type";
-import { useAppSelector } from "../../../redux/hook";
 import { useEffect } from "react";
 
 const UpdateBook = () => {
@@ -24,11 +22,15 @@ const UpdateBook = () => {
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<Pick<IBook, "genre" | "image" | "title">>({
+    } = useForm<
+        Pick<IBook, "genre" | "image" | "title" | "author" | "publicationDate">
+    >({
         defaultValues: {
             title: "",
             image: "",
             genre: "",
+            author: "",
+            publicationDate: "",
         },
     });
 
@@ -40,21 +42,22 @@ const UpdateBook = () => {
     }, []);
 
     useEffect(() => {
+        console.log(param?.state);
         reset({
             title: param?.state?.title,
             image: param?.state?.image,
             genre: param?.state?.genre,
+            author: param?.state?.author,
+            publicationDate: new Date(param?.state?.publicationDate).toISOString().slice(0,10),
         });
     }, [reset, param?.state]);
 
     const navigate = useNavigate();
 
     const handleEditBook: SubmitHandler<
-        Pick<IBook, "genre" | "image" | "title">
+        Pick<IBook, "genre" | "image" | "title" | "author" | "publicationDate">
     > = async (data) => {
-        const { genre, image, title } = data;
-
-        
+        const { genre, image, title, author, publicationDate } = data;
 
         const updatedBookData = {
             id: param?.state?._id,
@@ -62,6 +65,8 @@ const UpdateBook = () => {
                 genre,
                 image,
                 title,
+                author,
+                publicationDate,
             },
         };
 
@@ -107,6 +112,52 @@ const UpdateBook = () => {
                         {errors.title && (
                             <p className="text-red-600">
                                 {errors.title?.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="relative z-0 w-full mb-6 group">
+                        <label
+                            htmlFor="author"
+                            className=" text-md text-gray-900 mb-1  font-semibold"
+                        >
+                            Book Author
+                        </label>
+                        <input
+                            {...register("author", {
+                                required: "Book Author Is Required!",
+                            })}
+                            type="text"
+                            name="author"
+                            id="author"
+                            className="py-2 px-4 w-full text-base rounded-sm text-gray-900  border-0 border-b-2 border-gray-300 "
+                        />
+
+                        {errors.author && (
+                            <p className="text-red-600">
+                                {errors.author?.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="relative z-0 w-full mb-6 group">
+                        <label
+                            htmlFor="publicationDate"
+                            className=" text-md text-gray-900 mb-1  font-semibold"
+                        >
+                            Publication Date
+                        </label>
+                        <input
+                            {...register("publicationDate", {
+                                required: "Publication Date Is Required!",
+                            })}
+                            name="publicationDate"
+                            id="publicationDate"
+                            type="date"
+                            className="py-2 px-4 w-full text-base rounded-sm text-gray-900  border-0 border-b-2 border-gray-300 "
+                        />
+
+                        {errors.publicationDate && (
+                            <p className="text-red-600">
+                                {errors.publicationDate?.message}
                             </p>
                         )}
                     </div>

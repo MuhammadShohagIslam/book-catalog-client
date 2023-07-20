@@ -19,7 +19,7 @@ const bookApi = baseApi.injectEndpoints({
         updateBook: build.mutation({
             query: (payload: {
                 id: string;
-                data: Pick<IBook, "title" | "genre" | "image">;
+                data: Pick<IBook, "title" | "genre" | "image" | "author" | "publicationDate">;
             }) => ({
                 url: `books/${payload.id}`,
                 method: "PATCH",

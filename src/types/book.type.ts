@@ -1,21 +1,23 @@
 export interface IBook {
     _id?: string;
     title: string;
-    image:string;
+    image: string;
     genre: string;
-    author: {
+    user: {
+        _id: string;
         name: string;
-        authorId:string;
+        email: string;
     } | string;
-    publicationDate: Date;
-    createdAt?: string ;
+    author: string;
+    publicationDate: string;
+    createdAt?: string;
     updatedAt?: Date;
     reviews?: {
         name: string;
         email: string;
         review: string;
         bookId: string;
-        _id?: string
+        _id?: string;
     }[];
 }
 

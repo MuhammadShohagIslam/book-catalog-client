@@ -16,24 +16,24 @@ const AddBook = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<Pick<IBook, "genre" | "image" | "title">>();
+    } = useForm<
+        Pick<IBook, "genre" | "image" | "title" | "publicationDate" | "author">
+    >();
 
     const navigate = useNavigate();
 
     const handleAddBook: SubmitHandler<
-        Pick<IBook, "genre" | "image" | "title">
+        Pick<IBook, "genre" | "image" | "title" | "publicationDate" | "author">
     > = async (data) => {
-        const { genre, image, title } = data;
+        const { genre, image, title, publicationDate, author } = data;
 
         if (!user?.email) {
             return toast.error("Your Are Not Authorized user to add book!");
         }
         const addBookData = {
-            author: {
-                name: user?.name as string,
-                authorId: user?.userId as string,
-            },
-            publicationDate: new Date(),
+            author: author,
+            user: user?.userId as string,
+            publicationDate: publicationDate,
             genre,
             image,
             title,
@@ -86,6 +86,29 @@ const AddBook = () => {
                     </div>
                     <div className="relative z-0 w-full mb-6 group">
                         <label
+                            htmlFor="author"
+                            className=" text-md text-gray-900 mb-1  font-semibold"
+                        >
+                            Book Author
+                        </label>
+                        <input
+                            {...register("author", {
+                                required: "Book Author Is Required!",
+                            })}
+                            type="text"
+                            name="author"
+                            id="author"
+                            className="py-2 px-4 w-full text-base rounded-sm text-gray-900  border-0 border-b-2 border-gray-300 "
+                        />
+
+                        {errors.title && (
+                            <p className="text-red-600">
+                                {errors.title?.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="relative z-0 w-full mb-6 group">
+                        <label
                             htmlFor="image"
                             className=" text-md text-gray-900 mb-1 font-semibold"
                         >
@@ -104,6 +127,29 @@ const AddBook = () => {
                         {errors.image && (
                             <p className="text-red-600">
                                 {errors.image?.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="relative z-0 w-full mb-6 group">
+                        <label
+                            htmlFor="publicationDate"
+                            className=" text-md text-gray-900 mb-1  font-semibold"
+                        >
+                            Publication Date
+                        </label>
+                        <input
+                            {...register("publicationDate", {
+                                required: "Publication Date Is Required!",
+                            })}
+                            name="publicationDate"
+                            id="publicationDate"
+                            type="date"
+                            className="py-2 px-4 w-full text-base rounded-sm text-gray-900  border-0 border-b-2 border-gray-300 "
+                        />
+
+                        {errors.publicationDate && (
+                            <p className="text-red-600">
+                                {errors.publicationDate?.message}
                             </p>
                         )}
                     </div>

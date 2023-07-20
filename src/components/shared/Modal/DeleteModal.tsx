@@ -22,10 +22,7 @@ const DeleteModal = ({
     const navigate = useNavigate();
 
     const handleDelete = async (id: string) => {
-        if (
-            typeof data?.author !== "string" &&
-            user.name !== data?.author.name
-        ) {
+        if (typeof data?.user !== "string" && user.name !== data?.user?.name) {
             setDeleteModal(!openDeleteModal);
             return toast.error("Your not able to delete book!");
         }

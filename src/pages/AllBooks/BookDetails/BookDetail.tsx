@@ -18,7 +18,6 @@ const BookDetail = ({ data }: { data: IBook }) => {
 
     const handleDeleteBook = (data: IBook) => {
         if (!user?.email) {
-            console.log("inside");
             return navigate("/login", {
                 state: location,
             });
@@ -29,7 +28,6 @@ const BookDetail = ({ data }: { data: IBook }) => {
 
     const handleEditBook = (data: IBook) => {
         if (!user?.email) {
-            console.log("inside");
             return navigate("/login", {
                 state: location,
             });
@@ -82,10 +80,7 @@ const BookDetail = ({ data }: { data: IBook }) => {
                                 />
                                 <BookInfoItem
                                     name="Author"
-                                    value={
-                                        typeof data?.author !== "string" &&
-                                        data?.author?.name
-                                    }
+                                    value={data?.author}
                                 />
                                 <BookInfoItem
                                     name="Genre"
