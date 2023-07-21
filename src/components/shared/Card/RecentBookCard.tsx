@@ -38,8 +38,7 @@ const RecentBookCard = ({ data }: RecentBookCardProp) => {
                             <FiUser className="text-gray-800" />
                         </span>
                         <span>
-                            {typeof data?.author !== "string" &&
-                                data?.author?.name}
+                            {data?.author}
                         </span>
                     </div>
                     <div className="flex items-center">

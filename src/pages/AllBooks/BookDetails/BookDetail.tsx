@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import moment from "moment";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -8,18 +11,30 @@ import { IBook } from "./../../../types/book.type";
 import { useState } from "react";
 import DeleteModal from "../../../components/shared/Modal/DeleteModal";
 import { useAppSelector } from "../../../redux/hook";
+import {
+    useAddReadingSoonMutation,
+    useAddWishListMutation,
+} from "../../../redux/features/users/userApi";
+import { toast } from "react-hot-toast";
 
 const BookDetail = ({ data }: { data: IBook }) => {
     const [openDeleteModal, setDeleteModal] = useState(false);
     const [bookData, setBookData] = useState<IBook | undefined>(undefined);
     const user = useAppSelector((state) => state.local.user.user);
+
+    const [addWishList, { isLoading }] = useAddWishListMutation();
+    const [addReadingSoon, { isLoading: isLoadingReadingSoon }] =
+        useAddReadingSoonMutation();
+
     const location = useLocation();
     const navigate = useNavigate();
 
     const handleDeleteBook = (data: IBook) => {
         if (!user?.email) {
             return navigate("/login", {
-                state: location,
+                state: {
+                    from: location,
+                },
             });
         }
         setBookData(data);
@@ -29,30 +44,94 @@ const BookDetail = ({ data }: { data: IBook }) => {
     const handleEditBook = (data: IBook) => {
         if (!user?.email) {
             return navigate("/login", {
-                state: location,
+                state: {
+                    from: location,
+                },
             });
         }
         navigate("/update-book", {
             state: data,
         });
     };
+    const handleWishlistBook = async (data: IBook) => {
+        if (!user?.email) {
+            return navigate("/login", {
+                state: {
+                    from: location,
+                },
+            });
+        }
+        if (data?._id) {
+            const result = await addWishList({
+                bookId: data._id,
+            });
+            if ("data" in result) {
+                if (result.data.statusCode === 200) {
+                    toast.success("Add Book To Wish List successfully!");
+                }
+            } else {
+                toast.error("Add Book To Wish List failed!");
+            }
+        }
+    };
+    const handleReadingBookSoonBook = async (data: IBook) => {
+        if (!user?.email) {
+            return navigate("/login", {
+                state: {
+                    from: location,
+                },
+            });
+        }
+        if (data?._id) {
+            const result = await addReadingSoon({
+                bookId: data._id,
+            });
+            if ("data" in result) {
+                if (result.data.statusCode === 200) {
+                    toast.success("Add Book To Read Soon List successfully!");
+                }
+            } else {
+                toast.error("Add Book To Read Soon List failed!");
+            }
+        }
+    };
 
     return (
         <>
             <div className="w-[60%] mx-auto py-16 bg-white">
-                <div className="pr-9  flex gap-3 items-center justify-end ">
-                    <span
-                        onClick={() => handleEditBook(data)}
-                        className="flex items-center text-base hover:text-rose-500 text-secondary cursor-pointer"
-                    >
-                        <BiEdit className="text-xl" />
-                    </span>
-                    <span
-                        onClick={() => handleDeleteBook(data)}
-                        className="flex items-center text-base hover:text-rose-500 text-secondary cursor-pointer"
-                    >
-                        <AiFillDelete className="text-xl" />
-                    </span>
+                <div className="px-9 flex  items-center justify-between ">
+                    <div className="mt-7">
+                        <button
+                            onClick={() => handleWishlistBook(data)}
+                            type="button"
+                            className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        >
+                            {isLoading ? "Loading" : "Add To WishList"}
+                        </button>
+                        <button
+                            onClick={() => handleReadingBookSoonBook(data)}
+                            type="button"
+                            className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        >
+                            {isLoadingReadingSoon
+                                ? "Loading"
+                                : "Add to For Reading Book Soon"}
+                        </button>
+                    </div>
+                    <div className="flex gap-3">
+                        <span
+                            onClick={() => handleEditBook(data)}
+                            className="flex items-center text-base hover:text-rose-500 text-secondary cursor-pointer"
+                        >
+                            <BiEdit className="text-xl" />
+                        </span>
+                        <span
+                            onClick={() => handleDeleteBook(data)}
+                            className="flex items-center text-base hover:text-rose-500 text-secondary cursor-pointer"
+                        >
+                            <AiFillDelete className="text-xl" />
+                        </span>
+                    </div>
                 </div>
 
                 <div className="flex flex-col items-center rounded-lg">

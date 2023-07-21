@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Toaster } from "react-hot-toast";
 import { RouterProvider } from "react-router-dom";
 import router from "./Routes/Routes";
