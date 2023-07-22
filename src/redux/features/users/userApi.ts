@@ -33,7 +33,6 @@ const userApi = baseApi.injectEndpoints({
                     authorization: `bear ${localStorage.getItem("token")}`,
                 },
             }),
-            invalidatesTags:["Users"]
         }),
         addWishList: build.mutation({
             query: (payload: { bookId: string }) => ({
@@ -45,13 +44,12 @@ const userApi = baseApi.injectEndpoints({
                     authorization: `bear ${localStorage.getItem("token")}`,
                 },
             }),
-            providesTags: ["Users"]
         }),
         deleteWishList: build.mutation({
-            query: (payload: { bookId: string; wishListId: string }) => ({
+            query: (payload: { bookId: string }) => ({
                 url: `auth/wishlist/${payload.bookId}`,
                 method: "DELETE",
-                body: payload.wishListId,
+                body: payload,
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
                     authorization: `bear ${localStorage.getItem("token")}`,
@@ -70,10 +68,10 @@ const userApi = baseApi.injectEndpoints({
             }),
         }),
         deleteReadingSoon: build.mutation({
-            query: (payload: { bookId: string; readingSoonId: string }) => ({
+            query: (payload: { bookId: string }) => ({
                 url: `auth/reading-soon/${payload.bookId}`,
                 method: "DELETE",
-                body: payload.readingSoonId,
+                body: payload,
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
                     authorization: `bear ${localStorage.getItem("token")}`,
@@ -81,9 +79,7 @@ const userApi = baseApi.injectEndpoints({
             }),
         }),
         addReadingComplete: build.mutation({
-            query: (payload: {
-                bookId: string
-            }) => ({
+            query: (payload: { bookId: string }) => ({
                 url: "auth/reading-completed",
                 method: "POST",
                 body: payload,
@@ -94,13 +90,10 @@ const userApi = baseApi.injectEndpoints({
             }),
         }),
         deleteReadingComplete: build.mutation({
-            query: (payload: {
-                bookId: string;
-                readingCompletedId: string;
-            }) => ({
+            query: (payload: { bookId: string }) => ({
                 url: `auth/reading-completed/${payload.bookId}`,
                 method: "DELETE",
-                body: payload.readingCompletedId,
+                body: payload,
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
                     authorization: `bear ${localStorage.getItem("token")}`,
