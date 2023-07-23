@@ -33,7 +33,7 @@ const WishList = () => {
                 bookId: data,
             });
             if ("data" in result) {
-                if (result.data.statusCode === 200) {
+                if (result?.data?.statusCode === 200) {
                     toast.success("Removed Book To Wish List successfully!");
                     refetch()
                 }
@@ -45,8 +45,8 @@ const WishList = () => {
 
     let content;
 
-    if (data?.data.wishList?.length) {
-        content = data?.data.wishList?.map(
+    if (data?.data?.wishList?.length) {
+        content = data?.data?.wishList?.map(
             (d: { bookId: IBook; _id: string }) => (
                 <RecentBookCard
                     key={d._id}
@@ -60,7 +60,7 @@ const WishList = () => {
         );
     }
 
-    if (!data?.data.wishList?.length) {
+    if (!data?.data?.wishList?.length) {
         content = (
             <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
                 <h2>No Book Yet Add As a Wish List!</h2>

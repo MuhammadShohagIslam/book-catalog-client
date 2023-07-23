@@ -36,12 +36,13 @@ const RecentBookCard = ({
     wishListReadBookData,
     isLoadingReadingSoon,
 }: RecentBookCardProp) => {
+    console.log(wishListReadBookData, "wishListReadBookData");
     return (
         <div className="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 p-3">
             {data?.image ? (
                 <Link
                     to={`/books/${data?._id}`}
-                    className=" w-full flex items-center justify-center  h-72"
+                    className=" w-[55%] flex items-center justify-center  h-72"
                 >
                     <img
                         className="object-cover w-full rounded-t-lg h-full md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
@@ -50,7 +51,7 @@ const RecentBookCard = ({
                     />
                 </Link>
             ) : (
-                <Link to={`/books/${data?._id}`} className="w-1/2">
+                <Link to={`/books/${data?._id}`} className="w-[55%]">
                     <img
                         className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
                         src="https://data2.dawateislami.net/Data/Books/Read/ur/2014/1188/bt1188.jpg"
@@ -59,7 +60,7 @@ const RecentBookCard = ({
                 </Link>
             )}
 
-            <div className="flex flex-col justify-between p-4 leading-normal">
+            <div className="flex w-[55%] flex-col justify-between p-4 leading-normal">
                 <div>
                     <Link to={`/books/${data?._id}`}>
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">

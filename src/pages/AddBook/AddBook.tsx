@@ -170,6 +170,7 @@ const AddBook = () => {
                         >
                             <option value="">Choose A Book genre</option>
                             <option value="Beliefs">Beliefs</option>
+                            <option value="Seerat">Seerat</option>
                             <option value="Hadith">Hadith </option>
                             <option value="Islamic Life">Islamic Life</option>
                             <option value="Fiction">Fiction</option>

@@ -56,7 +56,7 @@ const SearchFiltering = ({
                                     type="button"
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
-                                  All Genres  
+                                    All Genres
                                 </button>
                             </li>
                             <li>
@@ -69,6 +69,18 @@ const SearchFiltering = ({
                                     className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
                                 >
                                     Beliefs
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={() => {
+                                        setOpenGenres(!openGenres),
+                                            handleFilteringByGenre("Seerat");
+                                    }}
+                                    type="button"
+                                    className="inline-flex w-full px-4 py-2 hover:bg-gray-100 "
+                                >
+                                    Seerat
                                 </button>
                             </li>
                             <li>

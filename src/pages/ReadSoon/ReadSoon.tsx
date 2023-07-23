@@ -5,7 +5,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { toast } from "react-hot-toast";
-import { Tooltip } from 'react-tooltip'
 import RecentBookCard from "../../components/shared/Card/RecentBookCard";
 import Spinner from "../../components/shared/Loader/Spinner";
 import {
@@ -26,7 +25,7 @@ const ReadSoon = () => {
     });
 
     const [deleteReadingSoon, { isLoading }] = useDeleteReadingSoonMutation();
-    const [AddReadingComplete] = useAddReadingCompleteMutation();
+    const [addReadingComplete] = useAddReadingCompleteMutation();
 
     const handleReadingBookSoon = async (data: string) => {
         if (data) {
@@ -34,7 +33,7 @@ const ReadSoon = () => {
                 bookId: data,
             });
             if ("data" in result) {
-                if (result.data.statusCode === 200) {
+                if (result?.data?.statusCode === 200) {
                     toast.success("Removed Book To Read Soon successfully!");
                     refetch()
                 }
@@ -46,7 +45,7 @@ const ReadSoon = () => {
 
     const handleAddReadingCompletedBook = async (data: string) => {
         if (data) {
-            const result = await AddReadingComplete({
+            const result = await addReadingComplete({
                 bookId: data,
             });
             if ("data" in result) {
@@ -61,8 +60,8 @@ const ReadSoon = () => {
 
     let content;
 
-    if (data?.data.readSoonBook?.length) {
-        content = data?.data.readSoonBook?.map(
+    if (data?.data?.readSoonBook?.length) {
+        content = data?.data?.readSoonBook?.map(
             (d: { bookId: IBook; _id: string }) => (
                 <RecentBookCard
                     key={d._id}
@@ -77,7 +76,7 @@ const ReadSoon = () => {
         );
     }
 
-    if (!data?.data.readSoonBook?.length) {
+    if (!data?.data?.readSoonBook?.length) {
         content = (
             <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
                 <h2>No Book Yet Mark Read Soon!</h2>

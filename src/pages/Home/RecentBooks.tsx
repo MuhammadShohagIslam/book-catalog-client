@@ -13,7 +13,7 @@ const RecentBooks = () => {
         searchTerm: "",
         genre: "",
     });
-    
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -28,6 +28,15 @@ const RecentBooks = () => {
             ?.slice(0, 10)
             .map((d: IBook) => <RecentBookCard key={d._id} data={d} />);
     }
+
+    if (!data?.data?.length) {
+        content = (
+            <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl mt-10 h-72">
+                <h2>No Book Found!</h2>
+            </div>
+        );
+    }
+    
     if (isLoading && !isError) {
         content = <Spinner style={"col-span-3 h-52"} />;
     }

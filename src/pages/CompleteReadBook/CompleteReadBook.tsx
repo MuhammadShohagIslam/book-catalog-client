@@ -31,7 +31,7 @@ const CompleteReadBook = () => {
                 bookId: data,
             });
             if ("data" in result) {
-                if (result.data.statusCode === 200) {
+                if (result?.data?.statusCode === 200) {
                     toast.success("Removed Book To Read Soon successfully!");
                     refetch()
                 }
@@ -45,7 +45,7 @@ const CompleteReadBook = () => {
 
     let content;
 
-    if (data?.data.completedReadBook?.length) {
+    if (data?.data?.completedReadBook?.length) {
         content = data?.data.completedReadBook?.map(
             (d: { bookId: IBook; _id: string }) => (
                 <RecentBookCard
@@ -60,7 +60,7 @@ const CompleteReadBook = () => {
         );
     }
 
-    if (!data?.data.completedReadBook?.length) {
+    if (!data?.data?.completedReadBook?.length) {
         content = (
             <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
                 <h2>No Book Yet Mark Read Complete Book!</h2>

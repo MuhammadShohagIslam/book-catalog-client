@@ -68,7 +68,7 @@ const AllBooks = () => {
         } else {
             content = (
                 <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
-                    <h2>No Blog Found!</h2>
+                    <h2>No Book Found!</h2>
                 </div>
             );
         }
