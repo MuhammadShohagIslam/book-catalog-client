@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import Logo from "../../../assets/Logo/logo.jpg";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
@@ -10,6 +10,8 @@ import { getUser } from "../../../redux/features/users/usersSlice";
 const Navbar = () => {
     const user = useAppSelector((state) => state.local.user.user);
     const dispatch = useAppDispatch();
+    const path = useLocation().pathname;
+
     const handleLogOut = () => {
         dispatch(getUser(undefined));
         localStorage.removeItem("token");
@@ -49,11 +51,13 @@ const Navbar = () => {
                     </svg>
                 </button>
                 <div className="">
-                    <ul className="flex flex-col mt-4 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent ">
+                    <ul className="flex flex-col mt-4 rounded-lg bg-gray-50 md:flex-row md:space-x-5 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent ">
                         <li>
                             <Link
                                 to="/"
-                                className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
+                                className={`block py-2 pl-3 pr-4 ${
+                                    path === "/" ? "text-blue-700" : "tex-white"
+                                } bg-blue-700 rounded md:bg-transparent  md:p-0`}
                                 aria-current="page"
                             >
                                 Home
@@ -62,18 +66,22 @@ const Navbar = () => {
                         <li>
                             <Link
                                 to="/all-books"
-                                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                className={`block py-2 pl-3 pr-4 ${
+                                    path === "/all-books" ? "text-blue-700" : "tex-gray-900"
+                                } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 `}
                             >
                                 All Books
                             </Link>
                         </li>
-                        
+
                         {user?.email && (
                             <>
                                 <li>
                                     <Link
                                         to="/add-book"
-                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                        className={`block py-2 pl-3 pr-4 ${
+                                            path === "/add-book" ? "text-blue-700" : "tex-gray-900"
+                                        } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 `}
                                     >
                                         Add Book
                                     </Link>
@@ -81,7 +89,9 @@ const Navbar = () => {
                                 <li>
                                     <Link
                                         to="/user-wish-list"
-                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                        className={`block py-2 pl-3 pr-4 ${
+                                            path === "/user-wish-list" ? "text-blue-700" : "tex-gray-900"
+                                        } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 `}
                                     >
                                         Wish List
                                     </Link>
@@ -89,9 +99,21 @@ const Navbar = () => {
                                 <li>
                                     <Link
                                         to="/user-read-soon"
-                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
+                                        className={`block py-2 pl-3 pr-4 ${
+                                            path === "/user-read-soon" ? "text-blue-700" : "tex-gray-900"
+                                        } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 `}
                                     >
-                                       Read Soon
+                                        Read Soon
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/user-read-complete-book"
+                                        className={`block py-2 pl-3 pr-4 ${
+                                            path === "/user-read-complete-book" ? "text-blue-700" : "tex-gray-900"
+                                        } rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 `}
+                                    >
+                                        Complete Read
                                     </Link>
                                 </li>
                                 <li

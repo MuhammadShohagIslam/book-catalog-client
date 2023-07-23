@@ -11,6 +11,7 @@ import PrivateRouter from "./PrivateRoute";
 import UpdateBook from "../pages/AllBooks/UpdateBook/UpdateBook";
 import WishList from "../pages/WishList/WishList";
 import ReadSoon from "../pages/ReadSoon/ReadSoon";
+import CompleteReadBook from "../pages/CompleteReadBook/CompleteReadBook";
 
 const router = createBrowserRouter([
     {
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
                 element: (
                     <PrivateRouter>
                         <ReadSoon />
+                    </PrivateRouter>
+                ),
+            },
+            {
+                path: "/user-read-complete-book",
+                element: (
+                    <PrivateRouter>
+                        <CompleteReadBook />
                     </PrivateRouter>
                 ),
             },

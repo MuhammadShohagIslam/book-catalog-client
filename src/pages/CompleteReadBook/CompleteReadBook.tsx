@@ -1,85 +1,85 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { toast } from "react-hot-toast";
 import RecentBookCard from "../../components/shared/Card/RecentBookCard";
 import Spinner from "../../components/shared/Loader/Spinner";
 import {
-    useDeleteWishListMutation,
+    useDeleteReadingCompleteMutation,
     useGetUserQuery,
 } from "../../redux/features/users/userApi";
 import { IBook } from "../../types/book.type";
-import { toast } from "react-hot-toast";
 
-const WishList = () => {
-    
+const CompleteReadBook = () => {
     const {
         data,
-        isLoading: isGetUserLoading,
+        isLoading: getUserLoading,
         isError,
         refetch
     } = useGetUserQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
 
-    const [deleteWishList, { isLoading }] = useDeleteWishListMutation();
+    const [deleteReadingComplete, { isLoading }] = useDeleteReadingCompleteMutation();
 
-    const handleWishlistBook = async (data: string) => {
+    const handleReadingCompleteBook = async (data: string) => {
         if (data) {
-            const result = await deleteWishList({
+            const result = await deleteReadingComplete({
                 bookId: data,
             });
             if ("data" in result) {
                 if (result.data.statusCode === 200) {
-                    toast.success("Removed Book To Wish List successfully!");
+                    toast.success("Removed Book To Read Soon successfully!");
                     refetch()
                 }
             } else {
-                toast.error("Removed Book To Wish List failed!");
+                toast.error("Removed Book To Read Soon failed!");
             }
         }
     };
 
+
+
     let content;
 
-    if (data?.data.wishList?.length) {
-        content = data?.data.wishList?.map(
+    if (data?.data.completedReadBook?.length) {
+        content = data?.data.completedReadBook?.map(
             (d: { bookId: IBook; _id: string }) => (
                 <RecentBookCard
                     key={d._id}
                     wishListReadBookData={d._id}
-                    handleWishlistBook={handleWishlistBook}
+                    handleReadingCompleteBook={handleReadingCompleteBook}
                     data={d.bookId}
-                    isWishList
-                    isLoading={isLoading}
+                    isReadCompleteBook
+                    isLoadingReadingSoon={isLoading}
                 />
             )
         );
     }
 
-    if (!data?.data.wishList?.length) {
+    if (!data?.data.completedReadBook?.length) {
         content = (
             <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
-                <h2>No Book Yet Add As a Wish List!</h2>
+                <h2>No Book Yet Mark Read Complete Book!</h2>
             </div>
         );
     }
 
-    if (isGetUserLoading && !isError) {
+    if (getUserLoading && !isError) {
         content = <Spinner style={"col-span-3 h-[450px]"} />;
     }
 
     return (
         <section className="container mx-auto pt-10 pb-28">
             <h2 className="text-blue-700 font-bold text-2xl">
-                Wish list Book By {data?.data?.name}
+               Completed Book By {data?.data?.name}
             </h2>
             <div className="grid grid-cols-3 gap-6 mt-12">{content}</div>
         </section>
     );
 };
 
-export default WishList;
+export default CompleteReadBook;

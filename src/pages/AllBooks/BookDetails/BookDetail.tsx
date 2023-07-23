@@ -4,7 +4,9 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import moment from "moment";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaHeart, FaBookOpen } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
+import { Tooltip } from "react-tooltip";
 import { BiEdit } from "react-icons/bi";
 import BookInfoItem from "./BookInfoItem";
 import { IBook } from "./../../../types/book.type";
@@ -104,19 +106,27 @@ const BookDetail = ({ data }: { data: IBook }) => {
                         <button
                             onClick={() => handleWishlistBook(data)}
                             type="button"
+                            id="wishListIdForAdd"
                             className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         >
-                            {isLoading ? "Loading" : "Add To WishList"}
+                            {isLoading ? "Loading" :<FaHeart/> }
                         </button>
+                        <Tooltip
+                            anchorSelect="#wishListIdForAdd"
+                            content="Add To WishList"
+                        />
                         <button
                             onClick={() => handleReadingBookSoonBook(data)}
                             type="button"
+                            id="readingBookSoon"
                             className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         >
-                            {isLoadingReadingSoon
-                                ? "Loading"
-                                : "Add to For Reading Book Soon"}
+                            {isLoadingReadingSoon ? "Loading" : <FaBookOpen />}
                         </button>
+                        <Tooltip
+                            anchorSelect="#readingBookSoon"
+                            content="Add to For Reading Book Soon"
+                        />
                     </div>
                     <div className="flex gap-3">
                         <span

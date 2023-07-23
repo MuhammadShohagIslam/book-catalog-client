@@ -80,7 +80,7 @@ const userApi = baseApi.injectEndpoints({
         }),
         addReadingComplete: build.mutation({
             query: (payload: { bookId: string }) => ({
-                url: "auth/reading-completed",
+                url: "auth/read-completed",
                 method: "POST",
                 body: payload,
                 headers: {
@@ -91,7 +91,7 @@ const userApi = baseApi.injectEndpoints({
         }),
         deleteReadingComplete: build.mutation({
             query: (payload: { bookId: string }) => ({
-                url: `auth/reading-completed/${payload.bookId}`,
+                url: `auth/read-completed/${payload.bookId}`,
                 method: "DELETE",
                 body: payload,
                 headers: {

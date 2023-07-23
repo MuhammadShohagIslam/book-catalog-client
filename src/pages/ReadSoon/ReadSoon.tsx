@@ -5,9 +5,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { toast } from "react-hot-toast";
+import { Tooltip } from 'react-tooltip'
 import RecentBookCard from "../../components/shared/Card/RecentBookCard";
 import Spinner from "../../components/shared/Loader/Spinner";
 import {
+    useAddReadingCompleteMutation,
     useDeleteReadingSoonMutation,
     useGetUserQuery,
 } from "../../redux/features/users/userApi";
@@ -24,8 +26,9 @@ const ReadSoon = () => {
     });
 
     const [deleteReadingSoon, { isLoading }] = useDeleteReadingSoonMutation();
+    const [AddReadingComplete] = useAddReadingCompleteMutation();
 
-    const handleReadingBookSoonBook = async (data: string) => {
+    const handleReadingBookSoon = async (data: string) => {
         if (data) {
             const result = await deleteReadingSoon({
                 bookId: data,
@@ -41,6 +44,21 @@ const ReadSoon = () => {
         }
     };
 
+    const handleAddReadingCompletedBook = async (data: string) => {
+        if (data) {
+            const result = await AddReadingComplete({
+                bookId: data,
+            });
+            if ("data" in result) {
+                if (result.data.statusCode === 200) {
+                    toast.success("Completed Read Book successfully!");
+                }
+            } else {
+                toast.error("Completed Read Book failed!");
+            }
+        }
+    };
+
     let content;
 
     if (data?.data.readSoonBook?.length) {
@@ -49,10 +67,11 @@ const ReadSoon = () => {
                 <RecentBookCard
                     key={d._id}
                     wishListReadBookData={d._id}
-                    handleReadingBookSoonBook={handleReadingBookSoonBook}
+                    handleReadingBookSoon={handleReadingBookSoon}
                     data={d.bookId}
                     isReadBook
                     isLoadingReadingSoon={isLoading}
+                    handleAddReadingCompletedBook={handleAddReadingCompletedBook}
                 />
             )
         );
@@ -61,7 +80,7 @@ const ReadSoon = () => {
     if (!data?.data.readSoonBook?.length) {
         content = (
             <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
-                <h2>No Blog Yet Mark Read Soon!</h2>
+                <h2>No Book Yet Mark Read Soon!</h2>
             </div>
         );
     }
@@ -69,6 +88,8 @@ const ReadSoon = () => {
     if (getUserLoading && !isError) {
         content = <Spinner style={"col-span-3 h-[450px]"} />;
     }
+
+ 
 
     return (
         <section className="container mx-auto pt-10 pb-28">
