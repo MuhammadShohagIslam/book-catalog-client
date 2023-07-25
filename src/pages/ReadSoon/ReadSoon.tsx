@@ -19,13 +19,14 @@ const ReadSoon = () => {
         data,
         isLoading: getUserLoading,
         isError,
-        refetch
+        refetch,
     } = useGetUserQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
 
     const [deleteReadingSoon, { isLoading }] = useDeleteReadingSoonMutation();
-    const [addReadingComplete] = useAddReadingCompleteMutation();
+    const [addReadingComplete, { isLoading: isLoadingComplete }] =
+        useAddReadingCompleteMutation();
 
     const handleReadingBookSoon = async (data: string) => {
         if (data) {
@@ -35,7 +36,7 @@ const ReadSoon = () => {
             if ("data" in result) {
                 if (result?.data?.statusCode === 200) {
                     toast.success("Removed Book To Read Soon successfully!");
-                    refetch()
+                    refetch();
                 }
             } else {
                 toast.error("Removed Book To Read Soon failed!");
@@ -60,22 +61,6 @@ const ReadSoon = () => {
 
     let content;
 
-    if (data?.data?.readSoonBook?.length) {
-        content = data?.data?.readSoonBook?.map(
-            (d: { bookId: IBook; _id: string }) => (
-                <RecentBookCard
-                    key={d._id}
-                    wishListReadBookData={d._id}
-                    handleReadingBookSoon={handleReadingBookSoon}
-                    data={d.bookId}
-                    isReadBook
-                    isLoadingReadingSoon={isLoading}
-                    handleAddReadingCompletedBook={handleAddReadingCompletedBook}
-                />
-            )
-        );
-    }
-
     if (!data?.data?.readSoonBook?.length) {
         content = (
             <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
@@ -84,11 +69,29 @@ const ReadSoon = () => {
         );
     }
 
+    if (data?.data?.readSoonBook?.length) {
+        content = data?.data?.readSoonBook?.map(
+            (d: { bookId: IBook; _id: string }) => (
+                <RecentBookCard
+                    key={d?._id}
+                    wishListReadBookData={d?._id}
+                    readCompleteBookData={d?.bookId?._id as string}
+                    handleReadingBookSoon={handleReadingBookSoon}
+                    data={d?.bookId}
+                    isReadBook
+                    isLoadingReadingSoon={isLoading}
+                    isLoadingComplete={isLoadingComplete}
+                    handleAddReadingCompletedBook={
+                        handleAddReadingCompletedBook
+                    }
+                />
+            )
+        );
+    }
+
     if (getUserLoading && !isError) {
         content = <Spinner style={"col-span-3 h-[450px]"} />;
     }
-
- 
 
     return (
         <section className="container mx-auto pt-10 pb-28">

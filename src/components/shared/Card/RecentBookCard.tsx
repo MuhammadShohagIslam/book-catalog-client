@@ -22,6 +22,8 @@ type RecentBookCardProp = {
     handleAddReadingCompletedBook?: (data: string) => void;
     isLoading?: boolean;
     isLoadingReadingSoon?: boolean;
+    isLoadingComplete?: boolean;
+    readCompleteBookData?: string;
 };
 const RecentBookCard = ({
     data,
@@ -34,9 +36,10 @@ const RecentBookCard = ({
     handleReadingCompleteBook,
     handleAddReadingCompletedBook,
     wishListReadBookData,
+    readCompleteBookData,
     isLoadingReadingSoon,
+    isLoadingComplete,
 }: RecentBookCardProp) => {
-    console.log(wishListReadBookData, "wishListReadBookData");
     return (
         <div className="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 p-3">
             {data?.image ? (
@@ -130,9 +133,11 @@ const RecentBookCard = ({
                                     id="readBookSoonId"
                                     className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                                 >
-                                    {isLoadingReadingSoon
-                                        ? "Loading"
-                                        :  <FaBookOpen />}
+                                    {isLoadingReadingSoon ? (
+                                        "Loading"
+                                    ) : (
+                                        <FaBookOpen />
+                                    )}
                                 </button>
                                 <Tooltip
                                     anchorSelect="#readBookSoonId"
@@ -141,16 +146,20 @@ const RecentBookCard = ({
                                 <button
                                     onClick={() =>
                                         handleAddReadingCompletedBook &&
-                                        wishListReadBookData &&
+                                        readCompleteBookData &&
                                         handleAddReadingCompletedBook(
-                                            wishListReadBookData
+                                            readCompleteBookData
                                         )
                                     }
                                     type="button"
                                     id="completedReadBook"
                                     className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                                 >
-                                     <GiSpellBook/>
+                                    {isLoadingComplete ? (
+                                        "Loading"
+                                    ) : (
+                                        <GiSpellBook />
+                                    )}
                                 </button>
                                 <Tooltip
                                     anchorSelect="#completedReadBook"
@@ -172,9 +181,11 @@ const RecentBookCard = ({
                                     type="button"
                                     className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                                 >
-                                    {isLoadingReadingSoon
-                                        ? "Loading"
-                                        : <GiSpellBook/>}
+                                    {isLoadingReadingSoon ? (
+                                        "Loading"
+                                    ) : (
+                                        <GiSpellBook />
+                                    )}
                                 </button>
                                 <Tooltip
                                     anchorSelect="#readingCompleted"

@@ -14,6 +14,8 @@ import {
 import { IBook } from "../../types/book.type";
 
 const CompleteReadBook = () => {
+
+
     const {
         data,
         isLoading: getUserLoading,
@@ -22,6 +24,7 @@ const CompleteReadBook = () => {
     } = useGetUserQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
+
 
     const [deleteReadingComplete, { isLoading }] = useDeleteReadingCompleteMutation();
 
@@ -45,6 +48,15 @@ const CompleteReadBook = () => {
 
     let content;
 
+    
+    if (!data?.data?.completedReadBook?.length) {
+        content = (
+            <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
+                <h2>No Book Yet Mark Read Complete Book!</h2>
+            </div>
+        );
+    }
+
     if (data?.data?.completedReadBook?.length) {
         content = data?.data.completedReadBook?.map(
             (d: { bookId: IBook; _id: string }) => (
@@ -60,17 +72,10 @@ const CompleteReadBook = () => {
         );
     }
 
-    if (!data?.data?.completedReadBook?.length) {
-        content = (
-            <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
-                <h2>No Book Yet Mark Read Complete Book!</h2>
-            </div>
-        );
-    }
-
     if (getUserLoading && !isError) {
         content = <Spinner style={"col-span-3 h-[450px]"} />;
     }
+
 
     return (
         <section className="container mx-auto pt-10 pb-28">

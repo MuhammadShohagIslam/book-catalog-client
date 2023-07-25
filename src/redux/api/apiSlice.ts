@@ -7,3 +7,5 @@ export const baseApi = createApi({
     endpoints: () => ({}),
     tagTypes: ["Books", "Reviews", "Users"],
 });
+
+// https://book-server-kappa.vercel.app/api/v1

@@ -89,6 +89,16 @@ const userApi = baseApi.injectEndpoints({
                 },
             }),
         }),
+        getCompletedBook: build.query({
+            query: () => ({
+                url: "auth/read-completed",
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    authorization: `bear ${localStorage.getItem("token")}`,
+                },
+            }),
+        }),
         deleteReadingComplete: build.mutation({
             query: (payload: { bookId: string }) => ({
                 url: `auth/read-completed/${payload.bookId}`,
@@ -114,4 +124,5 @@ export const {
     useDeleteReadingCompleteMutation,
     useAddReadingSoonMutation,
     useDeleteReadingSoonMutation,
+    useGetCompletedBookQuery
 } = userApi;

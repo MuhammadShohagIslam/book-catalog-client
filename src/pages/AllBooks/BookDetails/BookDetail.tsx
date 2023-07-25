@@ -109,7 +109,7 @@ const BookDetail = ({ data }: { data: IBook }) => {
                             id="wishListIdForAdd"
                             className="text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         >
-                            {isLoading ? "Loading" :<FaHeart/> }
+                            {isLoading ? "Loading" : <FaHeart />}
                         </button>
                         <Tooltip
                             anchorSelect="#wishListIdForAdd"
@@ -145,11 +145,19 @@ const BookDetail = ({ data }: { data: IBook }) => {
                 </div>
 
                 <div className="flex flex-col items-center rounded-lg">
-                    <img
-                        className="object-cover w-full rounded-t-lg h-[400px] md:h-auto md:w-56 md:rounded-none md:rounded-l-lg"
-                        src="https://data2.dawateislami.net/Data/Books/Read/ur/2014/1188/bt1188.jpg"
-                        alt=""
-                    />
+                    {data?.image ? (
+                        <img
+                            className="object-cover w-full rounded-t-lg h-[400px] md:h-auto md:w-56 md:rounded-none md:rounded-l-lg"
+                            src={data?.image}
+                            alt={data?.title}
+                        />
+                    ) : (
+                        <img
+                            className="object-cover w-full rounded-t-lg h-[400px] md:h-auto md:w-56 md:rounded-none md:rounded-l-lg"
+                            src="https://data2.dawateislami.net/Data/Books/Read/ur/2014/1188/bt1188.jpg"
+                            alt="book details"
+                        />
+                    )}
 
                     <div className="mt-8 bg-gray-200">
                         <h2 className="text-center pt-5 font-bold text-gray-800 text-xl">

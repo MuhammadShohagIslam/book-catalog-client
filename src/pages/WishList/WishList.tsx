@@ -44,6 +44,15 @@ const WishList = () => {
     };
 
     let content;
+    
+    if (!data?.data?.wishList?.length) {
+        content = (
+            <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
+                <h2>No Book Yet Add As a Wish List!</h2>
+            </div>
+        );
+    }
+
 
     if (data?.data?.wishList?.length) {
         content = data?.data?.wishList?.map(
@@ -60,13 +69,7 @@ const WishList = () => {
         );
     }
 
-    if (!data?.data?.wishList?.length) {
-        content = (
-            <div className="col-span-3 flex justify-center  text-blue-600 font-bold text-xl h-screen">
-                <h2>No Book Yet Add As a Wish List!</h2>
-            </div>
-        );
-    }
+
 
     if (isGetUserLoading && !isError) {
         content = <Spinner style={"col-span-3 h-[450px]"} />;
