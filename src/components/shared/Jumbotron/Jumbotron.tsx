@@ -7,7 +7,7 @@ const Jumbotron = ({ name }: { name: string }) => {
         }}>
             <div className="flex items-center h-full justify-center  sm:m-auto">
                 <div className="">
-                    <h2 className="lg:text-2xl sm:text-xl text-center text-white z-30 relative">
+                    <h2 className="lg:text-3xl sm:text-xl text-center text-white z-30 relative">
                         {name}
                     </h2>
                 </div>
