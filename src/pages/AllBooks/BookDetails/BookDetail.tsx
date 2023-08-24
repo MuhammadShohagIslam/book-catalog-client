@@ -51,6 +51,9 @@ const BookDetail = ({ data }: { data: IBook }) => {
                 },
             });
         }
+        if (typeof data?.user !== "string" && user?.email !== data?.user?.email) {
+            return toast.error("Your are not owner of the book!");
+        }
         navigate("/update-book", {
             state: data,
         });
@@ -65,10 +68,10 @@ const BookDetail = ({ data }: { data: IBook }) => {
         }
         if (data?._id) {
             const result = await addWishList({
-                bookId: data._id,
+                bookId: data?._id,
             });
             if ("data" in result) {
-                if (result.data.statusCode === 200) {
+                if (result?.data?.statusCode === 200) {
                     toast.success("Add Book To Wish List successfully!");
                 }
             } else {
@@ -86,10 +89,10 @@ const BookDetail = ({ data }: { data: IBook }) => {
         }
         if (data?._id) {
             const result = await addReadingSoon({
-                bookId: data._id,
+                bookId: data?._id,
             });
             if ("data" in result) {
-                if (result.data.statusCode === 200) {
+                if (result?.data?.statusCode === 200) {
                     toast.success("Add Book To Read Soon List successfully!");
                 }
             } else {

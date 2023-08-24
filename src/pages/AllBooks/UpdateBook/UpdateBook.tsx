@@ -11,12 +11,9 @@ import { IBook } from "../../../types/book.type";
 import { useEffect } from "react";
 
 const UpdateBook = () => {
-    // const param = useParams();
-    // const { data } = useSingleBookQuery(param?.id as string);
-    // console.log(param?.id, data);
     const param = useLocation();
     const [updateBook, { isLoading }] = useUpdateBookMutation();
-
+   
     const {
         register,
         handleSubmit,
@@ -42,7 +39,6 @@ const UpdateBook = () => {
     }, []);
 
     useEffect(() => {
-        console.log(param?.state);
         reset({
             title: param?.state?.title,
             image: param?.state?.image,
@@ -58,7 +54,7 @@ const UpdateBook = () => {
         Pick<IBook, "genre" | "image" | "title" | "author" | "publicationDate">
     > = async (data) => {
         const { genre, image, title, author, publicationDate } = data;
-
+       
         const updatedBookData = {
             id: param?.state?._id,
             data: {

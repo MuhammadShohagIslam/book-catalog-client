@@ -30,7 +30,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location?.state?.from?.pathname || "/";
 
     const handleRegister: SubmitHandler<RegisterFormValues> = async (data) => {
         const { fullName, password, email } = data;
@@ -44,9 +44,9 @@ const Register = () => {
         const result = await createUser(createUserData);
 
         if ("data" in result) {
-            if (result.data.statusCode === 200) {
+            if (result?.data?.statusCode === 200) {
                 const decoded: userJwtPayload = jwt_decode(
-                    result.data.data.accessToken as string
+                    result?.data?.data?.accessToken as string
                 );
                 dispatch(
                     getUser({
@@ -58,7 +58,7 @@ const Register = () => {
                 );
                 localStorage.setItem(
                     "token",
-                    result.data.data.accessToken as string
+                    result?.data?.data?.accessToken as string
                 );
                 toast.success("User registration successfully!");
                 navigate(from, { replace: true });
@@ -100,9 +100,9 @@ const Register = () => {
                             >
                                 Full Name
                             </label>
-                            {errors.fullName && (
+                            {errors?.fullName && (
                                 <p className="text-red-600">
-                                    {errors.fullName?.message}
+                                    {errors?.fullName?.message}
                                 </p>
                             )}
                         </div>
@@ -126,9 +126,9 @@ const Register = () => {
                             >
                                 Email
                             </label>
-                            {errors.email && (
+                            {errors?.email && (
                                 <p className="text-red-600">
-                                    {errors.email?.message}
+                                    {errors?.email?.message}
                                 </p>
                             )}
                         </div>
@@ -153,9 +153,9 @@ const Register = () => {
                             >
                                 Password
                             </label>
-                            {errors.password && (
+                            {errors?.password && (
                                 <p className="text-red-600">
-                                    {errors.password?.message}
+                                    {errors?.password?.message}
                                 </p>
                             )}
                         </div>

@@ -58,13 +58,13 @@ const CompleteReadBook = () => {
     }
 
     if (data?.data?.completedReadBook?.length) {
-        content = data?.data.completedReadBook?.map(
+        content = data?.data?.completedReadBook?.map(
             (d: { bookId: IBook; _id: string }) => (
                 <RecentBookCard
-                    key={d._id}
-                    wishListReadBookData={d._id}
+                    key={d?._id}
+                    wishListReadBookData={d?._id}
                     handleReadingCompleteBook={handleReadingCompleteBook}
-                    data={d.bookId}
+                    data={d?.bookId}
                     isReadCompleteBook
                     isLoadingReadingSoon={isLoading}
                 />

@@ -58,10 +58,10 @@ const WishList = () => {
         content = data?.data?.wishList?.map(
             (d: { bookId: IBook; _id: string }) => (
                 <RecentBookCard
-                    key={d._id}
-                    wishListReadBookData={d._id}
+                    key={d?._id}
+                    wishListReadBookData={d?._id}
                     handleWishlistBook={handleWishlistBook}
-                    data={d.bookId}
+                    data={d?.bookId}
                     isWishList
                     isLoading={isLoading}
                 />

@@ -41,9 +41,9 @@ const Login = () => {
         };
         const result = await loginUser(createUserData);
         if ("data" in result) {
-            if (result.data.statusCode === 200) {
+            if (result?.data?.statusCode === 200) {
                 const decoded: userJwtPayload = jwt_decode(
-                    result.data.data.accessToken as string
+                    result?.data?.data?.accessToken as string
                 );
                 dispatch(
                     getUser({
@@ -55,7 +55,7 @@ const Login = () => {
                 );
                 localStorage.setItem(
                     "token",
-                    result.data.data.accessToken as string
+                    result?.data?.data?.accessToken as string
                 );
                 toast.success("User login successfully!");
                 navigate(from, { replace: true })
@@ -126,7 +126,7 @@ const Login = () => {
                             </label>
                             {errors.password && (
                                 <p className="text-red-600">
-                                    {errors.password?.message}
+                                    {errors?.password?.message}
                                 </p>
                             )}
                         </div>

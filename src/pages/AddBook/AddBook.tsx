@@ -27,6 +27,7 @@ const AddBook = () => {
     > = async (data) => {
         const { genre, image, title, publicationDate, author } = data;
 
+   
         if (!user?.email) {
             return toast.error("Your Are Not Authorized user to add book!");
         }
@@ -101,9 +102,9 @@ const AddBook = () => {
                             className="py-2 px-4 w-full text-base rounded-sm text-gray-900  border-0 border-b-2 border-gray-300 "
                         />
 
-                        {errors.title && (
+                        {errors.author && (
                             <p className="text-red-600">
-                                {errors.title?.message}
+                                {errors.author?.message}
                             </p>
                         )}
                     </div>

@@ -24,19 +24,18 @@ const BookReviews = ({ bookData }: { bookData: IBook }) => {
 
     const handleReview: SubmitHandler<ReviewFormValues> = async (data) => {
         const review = {
-            name: data.name,
-            email: data.email,
-            review: data.review,
-            bookId: bookData._id,
+            name: data?.name,
+            email: data?.email,
+            review: data?.review,
+            bookId: bookData?._id,
         };
-        console.log(review);
         if (!bookData && isError) {
             return toast.error("You review Failed!");
         }
         const result = await createReview(review);
 
         if ("data" in result) {
-            if (result.data.statusCode === 200) {
+            if (result?.data?.statusCode === 200) {
                 toast.success("You review successfully!");
                 reset();
             }
@@ -59,7 +58,7 @@ const BookReviews = ({ bookData }: { bookData: IBook }) => {
                 </h2>
                 {bookData?.reviews?.map((review) => (
                     <div
-                        key={review._id}
+                        key={review?._id}
                         className="flex bg-white shadow ml-10 p-6 mb-2 gap-2 rounded-md cursor-pointer"
                     >
                         <div>
@@ -67,10 +66,10 @@ const BookReviews = ({ bookData }: { bookData: IBook }) => {
                         </div>
                         <div>
                             <div>
-                                <h4 className="text-gray-600">{review.name}</h4>
+                                <h4 className="text-gray-600">{review?.name}</h4>
                                 <p className="text-gray-500">
                                     {" "}
-                                    {review.review}
+                                    {review?.review}
                                 </p>
                             </div>
                         </div>

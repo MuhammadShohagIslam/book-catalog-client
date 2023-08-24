@@ -44,7 +44,7 @@ const AllBooks = () => {
             return d;
         } else {
             return (
-                new Date(d.createdAt as string).getFullYear() ===
+                new Date(d?.createdAt as string).getFullYear() ===
                 Number(filterDate)
             );
         }
@@ -54,7 +54,7 @@ const AllBooks = () => {
 
     if (blogFilterByYear?.length) {
         content = blogFilterByYear.map((d: IBook) => (
-            <RecentBookCard key={d._id} data={d} />
+            <RecentBookCard key={d?._id} data={d} />
         ));
     } else {
         if (
@@ -62,8 +62,8 @@ const AllBooks = () => {
             blogFilterByYear?.length &&
             (searchValue || filterGenre !== "all")
         ) {
-            content = data?.data.map((d: IBook) => (
-                <RecentBookCard key={d._id} data={d} />
+            content = data?.data?.map((d: IBook) => (
+                <RecentBookCard key={d?._id} data={d} />
             ));
         } else {
             content = (

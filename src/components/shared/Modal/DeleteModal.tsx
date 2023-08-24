@@ -22,14 +22,14 @@ const DeleteModal = ({
     const navigate = useNavigate();
 
     const handleDelete = async (id: string) => {
-        if (typeof data?.user !== "string" && user?.name !== data?.user?.name) {
+        if (typeof data?.user !== "string" && user?.email !== data?.user?.email) {
             setDeleteModal(!openDeleteModal);
-            return toast.error("Your not able to delete book!");
+            return toast.error("Your are not owner of the book!");
         }
         const result = await deleteBook(id);
 
         if ("data" in result) {
-            if (result.data.statusCode === 200) {
+            if (result?.data?.statusCode === 200) {
                 toast.success("Book Deleted successfully!");
                 navigate("/");
             }
